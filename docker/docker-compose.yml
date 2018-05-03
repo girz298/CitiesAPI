@@ -1,0 +1,28 @@
+version: '2'
+services:
+    mysql:
+        image: mysql:8.0
+        environment:
+            MYSQL_DATABASE: todo_list
+            MYSQL_PASSWORD: todo_root
+            MYSQL_USER: todo_root
+            MYSQL_ROOT_PASSWORD: root
+    php:
+        build: php-fpm
+        ports:
+            - '9002:9000'
+        volumes:
+            - ../:/var/www/symfony
+            - ./logs/symfony:/var/www/symfony/var/logs
+        links:
+            - mysql
+    nginx:
+        build: nginx
+        ports:
+            - '8080:80'
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx

@@ -3,7 +3,6 @@
 namespace App\Entity\Api;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,11 +29,11 @@ class Task
      */
     private $title;
 
-	/**
-	 * Many Tasks have one Project.
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Api\Project", inversedBy="tasks")
-	 * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
-	 */
+    /**
+     * Many Tasks have one Project.
+     * @ORM\ManyToOne(targetEntity="App\Entity\Api\Project", inversedBy="tasks")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     */
     private $project;
 
     public function getId()
@@ -55,12 +54,12 @@ class Task
     }
 
     public function getProject() : Project
-	{
-		return $this->project;
-	}
+    {
+        return $this->project;
+    }
 
     public function setProject(Project $project)
-	{
-		$this->project = $project;
-	}
+    {
+        $this->project = $project;
+    }
 }

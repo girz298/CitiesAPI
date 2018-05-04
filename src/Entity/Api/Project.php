@@ -22,19 +22,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Project
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-	/**
-	 * @var ArrayCollection $tasks One Project has many Tasks
-	 * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project")
-	 * @ApiSubresource()
-	 */
-	private $tasks;
+    /**
+     * @var ArrayCollection $tasks One Project has many Tasks
+     * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project")
+     * @ApiSubresource()
+     */
+    private $tasks;
 
     /**
      * @var string $title A name property - this is the name of the Project.
@@ -45,20 +45,20 @@ class Project
      */
     private $name;
 
-	public function __construct()
-	{
-		$this->tasks = new ArrayCollection();
-	}
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
 
-	public function getId() : int
-	{
-		return $this->id;
-	}
+    public function getId() : int
+    {
+        return $this->id;
+    }
 
-	public function getTasks()
-	{
-		return $this->tasks;
-	}
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
 
     /**
      * @return string

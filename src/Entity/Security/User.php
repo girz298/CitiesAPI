@@ -7,7 +7,6 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * Class User
  * @package App\Security
@@ -57,8 +56,7 @@ class User implements UserInterface, EquatableInterface
 
     public function isEqualTo(UserInterface $user)
     {
-        if ($user->getUsername() == $this->getUsername())
-        {
+        if ($user->getUsername() == $this->getUsername()) {
             return true;
         }
 

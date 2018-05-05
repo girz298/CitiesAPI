@@ -31,7 +31,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={
  *              "normalization_context"={"groups"={"read"}},
  *              "access_control"="object.getUser().getId() == user.getId()"
- *          }
+ *          },
+ *          "put"={
+ *              "normalization_context"={"groups"={"post_read"}},
+ *              "denormalization_context"={"groups"={"write"}}
+ *          },
+ *          "delete"
  *     }
  * )
  */
@@ -47,7 +52,7 @@ class Project
 
     /**
      * @var ArrayCollection $tasks One Project has many Tasks
-     * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project", cascade={"remove"})
      * @Groups({"read"})
      */
     private $tasks;

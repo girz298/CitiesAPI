@@ -19,7 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *          "get"={"access_control"="object.getProject().getUser().getId() == user.getId()"},
- *          "put"
+ *          "put",
+ *          "delete"
  *     })
  */
 class Task

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Security;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 
@@ -40,6 +41,17 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="string", length=255)
      */
     private $roles;
+
+    /**
+     * @var ArrayCollection $tasks One Project has many Tasks
+     * @ORM\OneToMany(targetEntity="App\Entity\Api\Project", mappedBy="user")
+     */
+    private $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     public function getId() : int
     {

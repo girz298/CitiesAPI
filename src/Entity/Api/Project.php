@@ -9,16 +9,23 @@
 namespace App\Entity\Api;
 
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Entity\Security\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Project
  * @package App\Entity\Api
  * @ORM\Entity()
- * @ApiResource(attributes={"pagination_items_per_page"=5})
+ * @ApiResource(
+ *     collectionOperations={
+*           "get"={"normalization_context"={"groups"={"read"}}},
+ *          "post"={"denormalization_context"={"groups"={"write"}}}
+ *     }
+ * )
  */
 class Project
 {
@@ -33,17 +40,25 @@ class Project
      * @var ArrayCollection $tasks One Project has many Tasks
      * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project")
      * @ApiSubresource()
+     * @Groups({"read"})
      */
     private $tasks;
 
     /**
      * @var string $title A name property - this is the name of the Project.
-     *
      * @ORM\Column(type="string", length=40)
      * @Assert\NotBlank(message="Project name couldn't be empty")
      * @Assert\Length(min="5", minMessage="Project name couldn't be less than 5 characters")
+     * @Groups({"read", "write"})
      */
     private $name;
+
+    /**
+     * Many Projects have one User.
+     * @ORM\ManyToOne(targetEntity="App\Entity\Security\User", inversedBy="projects")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -74,5 +89,21 @@ class Project
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser() : User
+    {
+        return $this->user;
     }
 }

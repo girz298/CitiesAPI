@@ -14,6 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateUserCommand extends Command
 {
     private $manager;
+    private $loader;
+    private $executor;
 
     public function __construct(ObjectManager $manager)
     {
@@ -24,18 +26,22 @@ class CreateUserCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:create:user')
+            ->setName('app:fill:database')
             ->setDescription('Creates a new user');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $loader = new Loader();
-        $loader->addFixture(new UserFixtureLoader());
-
-        $purger = new ORMPurger();
-        $executor = new ORMExecutor($this->manager, $purger);
-        $executor->execute($loader->getFixtures());
+        $this->init();
+        $this->executor->execute($this->loader->getFixtures());
     }
 
+    private function init()
+    {
+        $this->loader = new Loader();
+        $this->loader->addFixture(new UserFixtureLoader());
+
+        $purger = new ORMPurger();
+        $this->executor = new ORMExecutor($this->manager, $purger);
+    }
 }

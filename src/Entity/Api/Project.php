@@ -8,7 +8,6 @@
 
 namespace App\Entity\Api;
 
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Security\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,8 +21,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @ApiResource(
  *     collectionOperations={
-*           "get"={"normalization_context"={"groups"={"read"}}},
- *          "post"={"denormalization_context"={"groups"={"write"}}}
+ *          "get"={"normalization_context"={"groups"={"read"}}},
+ *          "post"={
+ *              "normalization_context"={"groups"={"post_read"}},
+ *              "denormalization_context"={"groups"={"write"}}
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "normalization_context"={"groups"={"read"}},
+ *              "access_control"="object.getUser().getId() == user.getId()"
+ *          }
  *     }
  * )
  */
@@ -33,13 +41,13 @@ class Project
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"read", "post_read"})
      */
     private $id;
 
     /**
      * @var ArrayCollection $tasks One Project has many Tasks
      * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project")
-     * @ApiSubresource()
      * @Groups({"read"})
      */
     private $tasks;
@@ -49,7 +57,7 @@ class Project
      * @ORM\Column(type="string", length=40)
      * @Assert\NotBlank(message="Project name couldn't be empty")
      * @Assert\Length(min="5", minMessage="Project name couldn't be less than 5 characters")
-     * @Groups({"read", "write"})
+     * @Groups({"read", "write", "post_read"})
      */
     private $name;
 

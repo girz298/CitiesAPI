@@ -4,13 +4,22 @@ namespace App\Entity\Api;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Task
  * @package App\Entity\Api
  * @ORM\Entity()
- * @ApiResource(attributes={"pagination_items_per_page"=5})
+ * @ApiResource(
+ *     attributes={"pagination_items_per_page"=5},
+ *     collectionOperations={
+ *          "get",
+ *          "post"={"denormalization_context"={"groups"={"write"}}}
+ *     },
+ *     itemOperations={
+ *          "get"={"access_control"="object.getProject().getUser().getId() == user.getId()"}
+ *     })
  */
 class Task
 {
@@ -26,6 +35,7 @@ class Task
      *
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
+     * @Groups({"write"})
      */
     private $title;
 
@@ -33,6 +43,7 @@ class Task
      * Many Tasks have one Project.
      * @ORM\ManyToOne(targetEntity="App\Entity\Api\Project", inversedBy="tasks")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * @Groups({"write"})
      */
     private $project;
 

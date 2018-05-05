@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class Task
  * @package App\Entity\Api
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Api\TaskRepository")
  * @ApiResource(
  *     attributes={"pagination_items_per_page"=5},
  *     collectionOperations={
@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "post"={"denormalization_context"={"groups"={"write"}}}
  *     },
  *     itemOperations={
- *          "get"={"access_control"="object.getProject().getUser().getId() == user.getId()"}
+ *          "get"={"access_control"="object.getProject().getUser().getId() == user.getId()"},
+ *          "put"
  *     })
  */
 class Task

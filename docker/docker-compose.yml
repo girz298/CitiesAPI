@@ -3,12 +3,12 @@ services:
     mysql:
         image: mysql:5.7
         ports:
-            - '3307:3306'
+            - '${MYSQL_EXTERNAL_PORT}:3306'
         environment:
-            MYSQL_DATABASE: todo_list
-            MYSQL_PASSWORD: todo_root
-            MYSQL_USER: todo_root
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
           - ./db:/var/lib/mysql
     php:
@@ -20,6 +20,14 @@ services:
             - ./logs/symfony:/var/www/symfony/var/logs
         links:
             - mysql
+        environment:
+            APP_ENV: ${APP_ENV}
+            APP_SECRET: ${APP_SECRET}
+            JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+            JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+            JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+            CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+            DATABASE_URL: 'mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE}'
     nginx:
         build: nginx
         ports:

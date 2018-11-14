@@ -29,3 +29,8 @@ services:
     'App\Doctrine\CurrentUserExtension':
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+
+    'App\Swagger\SwaggerDecorator':
+        decorates: 'api_platform.swagger.normalizer.documentation'
+        arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
+        autoconfigure: false

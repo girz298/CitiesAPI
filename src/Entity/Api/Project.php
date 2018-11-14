@@ -8,6 +8,7 @@
 
 namespace App\Entity\Api;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Security\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,6 +52,7 @@ class Project
     private $id;
 
     /**
+     * @ApiSubresource()
      * @var ArrayCollection $tasks One Project has many Tasks
      * @ORM\OneToMany(targetEntity="App\Entity\Api\Task", mappedBy="project", cascade={"remove"})
      * @Groups({"read"})

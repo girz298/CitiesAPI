@@ -10,7 +10,7 @@ use App\Entity\Api\Task;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CurrentUserExtension implements QueryCollectionExtensionInterface/*, QueryItemExtensionInterface*/
+class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $tokenStorage;
 
@@ -28,16 +28,16 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface/*, Query
         $this->addWhere($queryBuilder, $resourceClass);
     }
 
-//    public function applyToItem(
-//        QueryBuilder $queryBuilder,
-//        QueryNameGeneratorInterface $queryNameGenerator,
-//        string $resourceClass,
-//        array $identifiers,
-//        string $operationName = null,
-//        array $context = []
-//    ) {
-//        $this->addWhere($queryBuilder, $resourceClass);
-//    }
+    public function applyToItem(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        array $identifiers,
+        string $operationName = null,
+        array $context = []
+    ) {
+        $this->addWhere($queryBuilder, $resourceClass);
+    }
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass)
     {
@@ -50,8 +50,8 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface/*, Query
         } elseif ($resourceClass == Task::class) {
             $rootAlias = $queryBuilder->getRootAliases()[0];
             $queryBuilder
-                ->innerJoin($rootAlias.'.project', 'p')
-                ->where('p.user = :current_user')
+                ->join($rootAlias.'.project', 'p')
+                ->andWhere('p.user = :current_user')
                 ->setParameter('current_user', $user->getId());
         }
     }

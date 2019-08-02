@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    countries.file.path: '%kernel.project_dir%/config/Resources/GeoLite2-Country-Locations-en.csv'
 
 services:
     # default configuration for services in *this* file
@@ -24,13 +25,17 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    'App\Doctrine\CurrentUserExtension':
-        tags:
-            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
 
     'App\Swagger\SwaggerDecorator':
         decorates: 'api_platform.swagger.normalizer.documentation'
         arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
         autoconfigure: false
+
+    'App\Command\FillCountriesCommand':
+        calls:
+            - method: setFilePath
+              arguments:
+                  - '%countries.file.path%'
+            - method: setManager
+              arguments:
+                  - '@doctrine.orm.entity_manager'

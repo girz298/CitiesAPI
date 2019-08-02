@@ -128,4 +128,20 @@ class Country
     {
         $this->cities = $cities;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getContinent()
+    {
+        return $this->continent;
+    }
+
+    /**
+     * @param mixed $continent
+     */
+    public function setContinent(Continent $continent): void
+    {
+        $this->continent = $continent;
+    }
 }

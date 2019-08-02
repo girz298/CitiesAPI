@@ -50,12 +50,18 @@ class FillCountriesCommand extends Command
 
         $citiesFile->fgetcsv();
 
+        $cityIndex = 0;
+
         while ($line = $citiesFile->fgetcsv()) {
+            $cityIndex++;
             $cityName = $line[10] ?? null;
             $countryName = $line[5] ?? null;
 
             if ($countryName && $cityName) {
                 $this->createCity($countryName, $cityName, $output);
+            }
+            if ($cityIndex % 500 === 0) {
+                $this->manager->clear();
             }
         }
     }

@@ -55,7 +55,6 @@ class Continent
      * @ApiSubresource()
      * @var ArrayCollection $tasks One Project has many Tasks
      * @ORM\OneToMany(targetEntity="App\Entity\Api\Country", mappedBy="continent", cascade={"remove"})
-     * @Groups({AG::CONTINENT_READ})
      */
     private $countries;
 

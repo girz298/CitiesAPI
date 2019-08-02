@@ -3,6 +3,7 @@
 parameters:
     locale: 'en'
     countries.file.path: '%kernel.project_dir%/config/Resources/GeoLite2-Country-Locations-en.csv'
+    cities.file.path: '%kernel.project_dir%/config/Resources/GeoLite2-City-Locations-en.csv'
 
 services:
     # default configuration for services in *this* file
@@ -33,9 +34,12 @@ services:
 
     'App\Command\FillCountriesCommand':
         calls:
-            - method: setFilePath
+            - method: setContinentsFilePath
               arguments:
                   - '%countries.file.path%'
+            - method: setCitiesFilePath
+              arguments:
+                  - '%cities.file.path%'
             - method: setManager
               arguments:
                   - '@doctrine.orm.entity_manager'

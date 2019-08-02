@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @package App\Entity\Api
  * @ORM\Entity()
  * @ApiResource(
+ *     attributes={"pagination_items_per_page"=999999},
  *     collectionOperations={
  *          "get"={"normalization_context"={"groups"={AG::CONTINENT_READ, AG::COUNTRY_READ}}},
  *          "post"
@@ -76,7 +77,6 @@ class Continent
      */
     public function setId($id): void
     {
-
         $this->id = $id;
     }
 

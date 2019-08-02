@@ -2,6 +2,9 @@
 
 namespace App\Entity\Api;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -12,8 +15,9 @@ use App\Helper\AnnotationGroups as AG;
  * @package App\Entity\Api
  * @ORM\Entity()
  * @ApiResource(
+ *     attributes={"pagination_items_per_page"=999999},
  *     collectionOperations={
- *          "get",
+ *          "get"={"normalization_context"={"groups"={AG::COUNTRY_READ}}},
  *          "post"
  *     },
  *     itemOperations={
@@ -43,6 +47,7 @@ class Country
     /**
      * @var string
      * @ORM\Column(type="string", length=3, unique=true)
+     * @Groups({AG::COUNTRY_READ})
      */
     private $isoCode;
 
@@ -52,6 +57,13 @@ class Country
      * @ORM\JoinColumn(name="continent_id", referencedColumnName="id")
      */
     private $continent;
+
+    /**
+     * @ApiSubresource()
+     * @var ArrayCollection $tasks One Project has many Tasks
+     * @ORM\OneToMany(targetEntity="App\Entity\Api\City", mappedBy="country", cascade={"remove"})
+     */
+    private $cities;
 
     /**
      * @return mixed
@@ -102,18 +114,18 @@ class Country
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
-    public function getContinent()
+    public function getCities(): Collection
     {
-        return $this->continent;
+        return $this->cities;
     }
 
     /**
-     * @param mixed $continent
+     * @param ArrayCollection $cities
      */
-    public function setContinent($continent): void
+    public function setCities(ArrayCollection $cities): void
     {
-        $this->continent = $continent;
+        $this->cities = $cities;
     }
 }

@@ -14,14 +14,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity()
  * @ApiResource(
  *     attributes={"pagination_items_per_page"=999999},
- *     subresourceOperations={
- *         "api_countries_cities_get_subresource"={
+ *     collectionOperations={
+ *          "post",
+ *          "api_countries_cities_get_subresource"={
  *             "method"="GET",
  *             "normalization_context"={"groups"={AG::COUNTRY_CITY_SUBRESOURCE_READ}}
  *         }
- *     },
- *     collectionOperations={
- *          "post"
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={AG::CITY_READ}}},

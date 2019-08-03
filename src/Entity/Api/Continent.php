@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     attributes={"pagination_items_per_page"=999999},
  *     collectionOperations={
- *          "get"={"normalization_context"={"groups"={AG::CONTINENT_READ, AG::COUNTRY_READ}}},
+ *          "get"={"normalization_context"={"groups"={AG::CONTINENT_READ}}},
  *          "post"
  *     },
  *     itemOperations={

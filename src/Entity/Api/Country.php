@@ -16,15 +16,13 @@ use App\Helper\AnnotationGroups as AG;
  * @ORM\Entity()
  * @ApiResource(
  *     attributes={"pagination_items_per_page"=999999},
- *     subresourceOperations={
- *         "api_continents_countries_get_subresource"={
+ *     collectionOperations={
+ *          "get"={"normalization_context"={"groups"={AG::COUNTRY_READ}}},
+ *          "post",
+ *          "api_continents_countries_get_subresource"={
  *             "method"="GET",
  *             "normalization_context"={"groups"={AG::COUNTRY_READ}}
  *         }
- *     },
- *     collectionOperations={
- *          "get"={"normalization_context"={"groups"={AG::COUNTRY_READ}}},
- *          "post"
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={AG::COUNTRY_READ}}},

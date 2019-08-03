@@ -4,8 +4,9 @@ namespace App\Entity\Api;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use App\Helper\AnnotationGroups as AG;
 use App\Entity\Api\Country;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Project
@@ -13,12 +14,17 @@ use App\Entity\Api\Country;
  * @ORM\Entity()
  * @ApiResource(
  *     attributes={"pagination_items_per_page"=999999},
+ *     subresourceOperations={
+ *         "api_countries_cities_get_subresource"={
+ *             "method"="GET",
+ *             "normalization_context"={"groups"={AG::COUNTRY_CITY_SUBRESOURCE_READ}}
+ *         }
+ *     },
  *     collectionOperations={
- *          "get",
  *          "post"
  *     },
  *     itemOperations={
- *          "get",
+ *          "get"={"normalization_context"={"groups"={AG::CITY_READ}}},
  *          "put",
  *          "delete"
  *     }
@@ -30,12 +36,14 @@ class City
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({AG::CITY_READ, AG::COUNTRY_CITY_SUBRESOURCE_READ})
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
+     * @Groups({AG::CITY_READ, AG::COUNTRY_CITY_SUBRESOURCE_READ})
      */
     private $name;
 
